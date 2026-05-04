@@ -2,9 +2,7 @@
 .DS_Store
 
 # Agent dotfiles
-.agents/
-.cursor/
-.claude/
-.codex/
-.continue/
-.aider/
+.agents
+.cursor
+.claud
+.codex
