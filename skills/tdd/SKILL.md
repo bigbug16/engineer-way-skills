@@ -15,7 +15,34 @@ description: >-
 
 **Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
 
-See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
+Mock only external layers outside the subject's relevant context. Every test treats the component, hook, business logic, or other code under test as a black box and verifies only observable behavior.
+
+```typescript
+jest.mock("@/api/orders", () => ({ createOrder: jest.fn() }));
+jest.mock("@/hooks/useCurrentUser", () => ({ useCurrentUser: () => ({ id: "user-1" }) }));
+jest.mock("@stripe/stripe-js", () => ({ loadStripe: jest.fn() }));
+jest.mock("@/utils/toast", () => ({ toast: { error: jest.fn() } }));
+
+test("submits a plan and shows confirmation", async () => {
+  createOrder.mockResolvedValue({ id: "order-1" });
+
+  render(<CheckoutPlan />);
+  await user.click(screen.getByRole("radio", { name: /pro/i }));
+  await user.click(screen.getByRole("button", { name: /checkout/i }));
+
+  expect(await screen.findByText(/order confirmed/i)).toBeVisible();
+  expect(createOrder).toHaveBeenCalledWith({ plan: "pro", userId: "user-1" });
+});
+
+test("shows a recoverable error when checkout fails", async () => {
+  createOrder.mockRejectedValue(new Error("network"));
+
+  render(<CheckoutPlan />);
+  await user.click(screen.getByRole("button", { name: /checkout/i }));
+
+  expect(await screen.findByRole("alert")).toHaveTextContent(/try again/i);
+});
+```
 
 ## Anti-Pattern: Horizontal Slices
 
@@ -48,14 +75,11 @@ RIGHT (vertical):
 
 Before writing any code:
 
-- [ ] Confirm with user what interface changes are needed
 - [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
-- [ ] Design interfaces for [testability](interface-design.md)
 - [ ] List the behaviors to test (not implementation steps)
 - [ ] Get user approval on the plan
 
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
+Ask: "Which behaviors are most important to test?"
 
 **You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
 
@@ -101,7 +125,7 @@ Rules:
 
 ### 5. Refactor
 
-After all tests pass, look for [refactor candidates](refactoring.md):
+After all tests pass, look for:
 
 - [ ] Extract duplication
 - [ ] Deepen modules (move complexity behind simple interfaces)
