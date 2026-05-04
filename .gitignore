@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Agent dotfiles
+.agents/
+.cursor/
+.claude/
+.codex/
+.continue/
+.aider/
