@@ -32,5 +32,5 @@ for questioning and summarizing.
 
 MUST stop after question 15. Say the grilling is enough for now, summarize the
 clarified plan, decisions, and remaining risks, then stop. The only allowed
-next-step prompt is: ask the user to either run `/to-prd` or give a separate
+next-step prompt is: ask the user to either run `/create-prd` or give a separate
 future command. Do not start that next step yourself.
