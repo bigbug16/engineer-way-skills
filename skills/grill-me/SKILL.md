@@ -14,12 +14,14 @@ one by one, but do not chase every edge case or move into a new category
 outside the original topic.
 
 For each question, ask one question at a time and use exactly this mandatory
-format. Ask around 15 questions total. Option A MUST always be the recommended
+format. Ask around 15-20 questions total. Option A MUST always be the recommended
 answer.
 
 Your question format MUST be:
 
-Question 1/15: Question and explanation...
+### Question <number>/<total-question>: Question..
+Explanation if question is not clear/easy enough.
+
 A: Approach A... (recommended)
 B: Approach B...
 C: Approach C...
