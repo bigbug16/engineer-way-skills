@@ -1,9 +1,7 @@
 ---
 name: tdd
 description: >-
-  Test-driven development with red-green-refactor loop. Use when user wants to
-  build features or fix bugs using TDD, mentions "red-green-refactor", wants
-  integration tests, or asks for test-first development.
+  Test-driven development with red-green-refactor loop based on local Obsidian task files. Use when user wants to build features or fix bugs using TDD based on a specific [[task-note]] from the .docs/tasks/ folder.
 ---
 # Test-Driven Development
 
@@ -26,7 +24,7 @@ jest.mock("@/utils/toast", () => ({ toast: { error: jest.fn() } }));
 test("submits a plan and shows confirmation", async () => {
   createOrder.mockResolvedValue({ id: "order-1" });
 
-  render(<CheckoutPlan />);
+  render(<CheckoutPlan/>);
   await user.click(screen.getByRole("radio", { name: /pro/i }));
   await user.click(screen.getByRole("button", { name: /checkout/i }));
 
@@ -37,7 +35,7 @@ test("submits a plan and shows confirmation", async () => {
 test("shows a recoverable error when checkout fails", async () => {
   createOrder.mockRejectedValue(new Error("network"));
 
-  render(<CheckoutPlan />);
+  render(<CheckoutPlan/>);
   await user.click(screen.getByRole("button", { name: /checkout/i }));
 
   expect(await screen.findByRole("alert")).toHaveTextContent(/try again/i);
@@ -71,13 +69,16 @@ RIGHT (vertical):
 
 ## Workflow
 
-### 1. Planning
+### 1. Planning & Context
+
+**Context Check:**
+- If the user invoked this skill with a specific target (e.g., `/tdd build the login button`), focus ONLY on that explicit request and skip reading the vault tasks.
+- If the user invoked this skill alone (e.g., just `/tdd`), default to the local Obsidian vault: read the relevant `[[task-note]]` from the `.docs/tasks/` folder and any linked inspirations.
 
 Before writing any code:
-
-- [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] List the behaviors to test (not implementation steps)
-- [ ] Get user approval on the plan
+- [ ] Confirm with the user which behaviors to test first (based on their explicit prompt OR the vault task).
+- [ ] List the behaviors to test (not implementation steps).
+- [ ] Get user approval on the plan.
 
 Ask: "Which behaviors are most important to test?"
 
@@ -113,6 +114,7 @@ For each remaining behavior:
 SCAN:  Check existing tests for adapt candidates
 RED:   Write/adapt next test → fails
 GREEN: Minimal code to pass → passes
+UPDATE: Mark the relevant `[x]` Acceptance criteria in the local `.docs/tasks/` markdown file.
 ```
 
 Rules:
@@ -122,6 +124,7 @@ Rules:
 - Only enough code to pass current test
 - Don't anticipate future tests
 - Keep tests focused on observable behavior
+- Update the local `.docs/tasks/` markdown file as criteria are met.
 
 ### 5. Refactor
 
@@ -138,11 +141,13 @@ After all tests pass, look for:
 ## Checklist Per Cycle
 
 ```
+[ ] Read the task and linked inspirations from the local Obsidian Vault
 [ ] Existing tests scanned before writing a new one
 [ ] Adapted existing test when behavior has changed, not added a duplicate
 [ ] Test describes behavior, not implementation
 [ ] Test uses public interface only
 [ ] Test would survive internal refactor
 [ ] Code is minimal for this test
+[ ] Updated the Acceptance Criteria checklist in the local Obsidian task file
 [ ] No speculative features added
 ```
