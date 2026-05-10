@@ -1,5 +1,5 @@
 ---
-name: vault-prd
+name: create-prd
 description: >-
   Turn the current conversation context into a PRD and save it to the local Obsidian vault (.docs folder). Use when user wants to create a PRD from the current context.
 ---
