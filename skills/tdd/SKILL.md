@@ -74,6 +74,7 @@ RIGHT (vertical):
 **Context Check:**
 - If the user invoked this skill with a specific target (e.g., `/tdd build the login button`), focus ONLY on that explicit request and skip reading the vault tasks.
 - If the user invoked this skill alone (e.g., just `/tdd`), default to the local Obsidian vault: read the relevant `[[task-note]]` from the `.docs/tasks/` folder and any linked inspirations.
+- If `.docs/tasks/` does not exist, ask the user where task notes are stored before proceeding.
 
 Before writing any code:
 - [ ] Confirm with the user which behaviors to test first (based on their explicit prompt OR the vault task).
@@ -141,6 +142,7 @@ After all tests pass, look for:
 ## Checklist Per Cycle
 
 ```
+[ ] Confirmed vault task path exists or asked the user for location
 [ ] Read the task and linked inspirations from the local Obsidian Vault
 [ ] Existing tests scanned before writing a new one
 [ ] Adapted existing test when behavior has changed, not added a duplicate

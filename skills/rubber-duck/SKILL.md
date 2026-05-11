@@ -37,3 +37,4 @@ You MUST use the exact format below. Replace the date placeholder with today's c
 - **[Component/Block Name]:** [Short plain-words explanation of what it does and why]
 - **[Component/Block Name]:** [Short plain-words explanation of what it does and why]
 - **Caught Issue:** [If you caught any logic flaw during Step 2, briefly note it here. Otherwise, omit this line.]
+```

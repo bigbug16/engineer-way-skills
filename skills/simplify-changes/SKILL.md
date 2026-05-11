@@ -16,14 +16,30 @@ When invoked, you MUST immediately stop and ask the user to choose an execution 
 
 ## Step 2: Rules of Refinement
 Once the mode is selected, analyze the recently modified code using these strict rules:
-1. **Preserve Functionality:** You MUST never change what the code does — only how it does it.
-2. **Apply Vault Standards:** You MUST follow any architectural or styling standards defined in the user's `.docs/` vault.
-3. **Enhance Clarity:** 
+
+1. **Preserve Functionality [MUST]:** You MUST never change what the code does — only how it does it. All original features, outputs, and behaviors MUST remain intact.
+
+2. **Apply Standards [MUST]:** You MUST follow coding standards in this order of priority:
+   - `AGENTS.md` at the project root (if it exists)
+   - Any architectural or styling notes in the `.docs/` vault folder
+   - Consistency with the existing codebase patterns
+
+3. **Enhance Clarity [MUST]:**
    - Reduce unnecessary complexity and nesting.
    - Eliminate redundant abstractions and obvious comments.
    - Avoid nested ternary operators (prefer early returns or if/else).
    - Choose explicit clarity over overly compact one-liners.
-4. **Focus Scope:** Only refine code that has been modified in the current session or task.
+   - Improve readability through clear variable and function names.
+
+4. **Maintain Balance [MUST]:** You MUST avoid over-simplification. You MUST NOT:
+   - Reduce code clarity or maintainability.
+   - Create overly clever solutions that are hard to understand.
+   - Combine too many concerns into single functions or components.
+   - Remove helpful abstractions that improve code organization.
+   - Prioritize "fewer lines" over readability (e.g., nested ternaries, dense one-liners).
+   - Make the code harder to debug or extend.
+
+5. **Focus Scope [MUST]:** Only refine code that has been modified in the current session or task.
 
 ## Step 3: Execution
 
@@ -39,12 +55,14 @@ Once the mode is selected, analyze the recently modified code using these strict
    // <reason for this change>
    - <original line(s)>
    + <simplified line(s)>
-   
-```
+   ```
 3. **STOP.** You MUST wait for the user to approve the diff. Do NOT apply changes to the files until the user says "yes" or "approved".
 4. Once approved, apply the changes and proceed to Step 4.
 
 ## Step 4: Vault Update (Refactor Log)
 After the changes are successfully applied to the codebase:
-- Open the active task file in the `.docs/tasks/` folder (e.g., `[[task-note]]`).
-- Append a brief note under a "## Refactor Log" heading at the bottom of the file detailing what was simplified (e.g., "- Simplified auth flow ternary operators into early returns").
+- Locate the active task file as follows:
+  - Use the task file referenced in the user's prompt if one is specified.
+  - If none is specified and `.docs/tasks/` exists, use the most recently modified task file.
+  - If `.docs/tasks/` does not exist, ask the user where to log the refactor summary.
+- Append a brief note under a `## Refactor Log` heading at the bottom of the file detailing what was simplified (e.g., `- Simplified auth flow ternary operators into early returns`).

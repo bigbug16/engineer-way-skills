@@ -42,7 +42,8 @@ Ask the user:
 Iterate until the user approves the breakdown.
 
 ### 5. Save the tasks to the Obsidian Vault
-For each approved slice, create a new Markdown file in the `.docs/tasks/` folder (e.g., `.docs/tasks/task-1-setup-db.md`). 
+- If `.docs/tasks/` does not exist, ask the user where task notes are stored before creating any files.
+- For each approved slice, create a new Markdown file in the `.docs/tasks/` folder (e.g., `.docs/tasks/task-1-setup-db.md`).
 
 **LINKING RULE:** Publish tasks in dependency order (blockers first) so you can reference real task files in the "Blocked by" field using Obsidian bi-directional links (e.g., `[[task-1-setup-db]]`).
 
@@ -60,6 +61,7 @@ A concise description of this vertical slice. Describe the end-to-end behavior.
 
 ## Blocked by
 - [[blocking-task-name]] (if any)
-Or "None - can start immediately" if no blockers.
+- Or "None - can start immediately" if no blockers.
 
 </task-template>
+
